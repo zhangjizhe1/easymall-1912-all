@@ -1,0 +1,18 @@
+# 项目排除路径
+/easymall-parent/easymall-cart/target/
+/easymall-parent/easymall-common-resources/target/
+/easymall-parent/easymall-img/target/
+/easymall-parent/easymall-order/target/
+/easymall-parent/easymall-product/target/
+/easymall-parent/easymall-product-api/target/
+/easymall-parent/easymall-seckill/target/
+/easymall-parent/easymall-user/target/
+/easymall-parent/target/
+/easymall-search/target/
+/orderuser-1912-parent/springboot-order/target/
+/orderuser-1912-parent/springboot-user/target/
+/spring-cloud-1912-parent/eureka-client/target/
+/spring-cloud-1912-parent/eureka-server/target/
+/spring-cloud-1912-parent/gateway-server/target/
+/spring-cloud-1912-parent/ribbon-server/target/
+/target/

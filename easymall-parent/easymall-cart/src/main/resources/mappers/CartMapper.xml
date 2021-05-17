@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.cart.mapper.CartMapper">
+    <!--查询一个用户的购物车所有商品-->
+    <select id="selectCartsByUserid" resultType="Cart">
+        select * from t_cart where user_id=#{userId};
+    </select>
+    <!--查询已存在-->
+    <select id="selectCartByUidAndPid" resultType="Cart">
+        select * from t_cart where user_id=#{userId}
+        and product_id=#{productId};
+    </select>
+    <!--更新num-->
+    <update id="updateCartNumByUidAndPid">
+        update t_cart set num=#{num} where user_id=#{userId}
+        and product_id=#{productId};
+    </update>
+    <insert id="insertCart">
+        insert into t_cart (
+		user_id,product_id,product_name,
+		product_image,product_price,num) values(
+		#{userId},#{productId},#{productName},
+		#{productImage},#{productPrice},#{num})
+    </insert>
+    <!--删除购物车-->
+    <delete id="deleteCartByUidAndPid">
+        delete from t_cart where user_id=#{userId}
+        and product_id=#{productId};
+    </delete>
+</mapper>

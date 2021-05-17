@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.order.mapper.OrderMapper">
+    <!--使用insert 将一个order对象写入到t_order同时,写入t_order_item-->
+    <insert id="insertOrder">
+        /*写入主表数据*/
+        insert into t_order (
+        order_id,order_money,
+        order_receiverinfo,
+        user_id) VALUES (
+        #{orderId},#{orderMoney},
+        #{orderReceiverinfo},
+        #{userId});
+        /*写入子表数据 在持久层使用标签完成for循环*/
+        /*
+        collection:表示集合属性
+        item:每次循环变量名称
+        */
+        <foreach collection="orderItems" item="oi">
+            insert into t_order_item (order_id,product_id,num,product_name
+            ,product_price,product_image) values (#{orderId},#{oi.productId},
+            #{oi.num},#{oi.productName},#{oi.productPrice},#{oi.productImage});
+        </foreach>
+    </insert>
+
+    <select id="selectOrdersByUserid" resultMap="ORDERRM">
+        select * from t_order left join t_order_item
+        on t_order.order_id=t_order_item.order_id
+        where t_order.user_id=#{userId};
+    </select>
+    <!--定义ORDERRM的resultMap-->
+    <resultMap id="ORDERRM" type="Order">
+        <!--封装主表t_order和order对象关系-->
+        <id property="orderId" column="order_id"/>
+        <result property="orderMoney" column="order_money"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="orderReceiverinfo" column="order_receiverinfo"/>
+        <result property="orderPaystate" column="order_paystate"/>
+        <result property="userId" column="user_id"/>
+        <!--对于order对象来讲子表数据就是每一个order对象orderItems属性-->
+        <!--对多关系使用collection标签-->
+        <collection property="orderItems" javaType="ArrayList" ofType="OrderItem">
+            <id property="id" column="id"/>
+            <result property="orderId" column="order_id"/>
+            <result property="productId" column="product_id"/>
+            <result property="productName" column="product_name"/>
+            <result property="num" column="num"/>
+            <result property="productPrice" column="product_price"/>
+            <result property="productImage" column="product_image"/>
+        </collection>
+    </resultMap>
+    <!--删除订单-->
+    <delete id="deleteOrderById">
+        delete from t_order where order_id=#{orderId};
+        delete from t_order_item where order_id=#{orderId};
+    </delete>
+</mapper>
